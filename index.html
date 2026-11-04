@@ -24,10 +24,10 @@
             border: 4px solid #00f3ff;
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
         }
-        /* कैमरे को बिल्कुल ऊपर चश्मे के लेंस के ऊपर या कपार के पास सेट करने के लिए */
+        /* कैमरे की सटीक पोजीशन चश्मे के लेंस के ऊपर */
         #webcam {
             position: absolute;
-            top: 10%; /* इसे और ऊपर कर दिया गया है ताकि मुँह पर न आए */
+            top: 10%;
             left: 31%;
             width: 38%;
             height: 12%;
@@ -35,6 +35,26 @@
             border: 2px solid #00f3ff;
             border-radius: 6px;
             z-index: 10;
+        }
+        /* शानदार क्लिक करने वाला बटन */
+        .play-btn {
+            background: linear-gradient(135deg, #00f3ff, #0066ff);
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .play-btn:active {
+            transform: scale(0.95);
         }
         .message-box {
             background: rgba(15, 23, 42, 0.9);
@@ -55,9 +75,14 @@
         <!-- आपका एवेतार फोटो -->
         <img src="photo.png" alt="Myra AI Avatar" class="avatar">
         
-        <!-- लाइव कैमरा जो अब बिल्कुल ऊपर चश्मे के पास दिखेगा -->
+        <!-- लाइव कैमरा -->
         <video id="webcam" autoplay playsinline></video>
         
+        <!-- साफ़-साफ़ दिखने वाला टच/क्लिक बटन -->
+        <button class="play-btn" id="audioTrigger">
+            👆 आवाज़ सुनने के लिए यहाँ क्लिक करें
+        </button>
+
         <!-- भविष्य और तकनीक का संदेश बॉक्स -->
         <div class="message-box">
             <strong>नमस्ते! अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है।</strong><br>
@@ -65,23 +90,25 @@
         </div>
     </div>
 
-    <!-- आपकी ऑडियो फाइल -->
+    <!-- ऑडियो फाइल -->
     <audio id="bg-audio" src="audio.mp3" preload="auto"></audio>
 
     <script>
-        // कैमरे को चालू करना
+        // कैमरा चालू करना
         const video = document.getElementById('webcam');
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
             .then(stream => { video.srcObject = stream; })
-            .catch(err => { console.log("कैमरा चालू करने में त्रुटि: ", err); });
+            .catch(err => { console.log("कैमरा त्रुटि: ", err); });
 
-        // स्क्रीन पर टच करने पर आवाज़ शुरू होना
-        document.body.addEventListener('click', function() {
-            const audio = document.getElementById('bg-audio');
-            if (audio.paused) {
-                audio.play().catch(e => console.log("ऑडियो प्ले करने में समस्या:", e));
-            }
-        }, { once: true });
+        // बटन पर क्लिक करते ही तुरंत आवाज़ शुरू होना
+        const triggerBtn = document.getElementById('audioTrigger');
+        const audio = document.getElementById('bg-audio');
+
+        triggerBtn.addEventListener('click', function() {
+            audio.play().then(() => {
+                triggerBtn.style.display = 'none'; // क्लिक होने के बाद बटन छिप जाएगा ताकि फोटो और चेहरा साफ दिखे
+            }).catch(e => console.log("ऑडियो प्ले समस्या:", e));
+        });
     </script>
 
 </body>
