@@ -3,96 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा</title>
+    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा AI</title>
     <style>
         body {
+            margin: 0;
             background-color: #0b0f19;
             color: #ffffff;
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
         .container {
-            max-width: 400px;
-            margin: auto;
-            background: #131b2e;
-            border: 2px solid #ff2a85;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(255, 42, 133, 0.4);
-        }
-        .glass-container {
             position: relative;
-            display: inline-block;
-            width: 100%;
-            margin-top: 15px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            border: 3px solid #00ffff;
         }
-        .base-image {
+        .container img {
             width: 100%;
-            border-radius: 10px;
-        }
-        /* चश्मे के लेंस पर लाइव कैमरा दिखाने की सेटिंग */
-        #userCamera {
-            position: absolute;
-            top: 32%;
-            left: 28%;
-            width: 22%;
-            height: 12%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 50% / 30%;
-            border: 1px solid #00ffff;
-            transform: rotate(-5deg);
+        }
+        /* चश्मे के लेंस पर कैमरे का ओवरले फ्रेम */
+        #camera-overlay {
+            position: absolute;
+            top: 38%;
+            left: 32%`z;
+            width: 36%;
+            height: 18%;
+            border: 2px dashed #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #00ffff;
+            font-weight: bold;
+            text-align: center;
         }
         .btn {
-            background: linear-gradient(45deg, #ff2a85, #8a2be2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 25px;
-            cursor: pointer;
             margin-top: 15px;
-            width: 100%;
+            padding: 10px 20px;
+            background-color: #00ffff;
+            color: #0b0f19;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>🤖 मायरा - यूनिवर्सल एआई</h2>
-        <p>निर्माता: अशोक करोसिया डिजिटल टेक्नोलॉजी</p>
-
-        <div class="glass-container">
-            <!-- यहाँ आपकी फोटो का नाम photo.png है जो गिटहब पर अपलोड है -->
-            <img src="photo.png" alt="अशोक करोसिया" class="base-image">
-            
-            <!-- चश्मे के लेंस के अंदर दिखने वाला लाइव कैमरा -->
-            <video id="userCamera" autoplay playsinline muted></video>
+        <!-- आपकी मुख्य फोटो (फाइल का नाम photo.png होना चाहिए) -->
+        <img src="photo.png" alt="अशोक करोसिया">
+        
+        <!-- चश्मे के लेंस पर लाइव कैमरा व्यू -->
+        <div id="camera-overlay">
+            <video id="webcam" autoplay playsinline></video>
         </div>
-
-        <p>मायरा बातचीत के लिए तैयार है।</p>
-        <button class="btn" onclick="startMyra()">▶ मायरा से बातचीत शुरू करें</button>
     </div>
 
+    <div class="status" id="statusText">मायरा AI सक्रिय है... बोलिए!</div>
+    <button class="btn" onclick="startMyra()">मायरा से बात करें</button>
+
     <script>
-        // मोबाइल का कैमरा चालू करके लेंस में दिखाने का कोड
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-            .then(function(stream) {
-                var videoElement = document.getElementById('userCamera');
-                videoElement.srcObject = stream;
-            })
-            .catch(function(error) {
-                console.log("कैमरा चालू नहीं हो सका: ", error);
-            });
+        // कैमरा शुरू करने का फंक्शन
+        async function initCamera() {
+            try {
+                const videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                const webcamElement = document.getElementById('webcam');
+                webcamElement.srcObject = videoStream;
+            } catch (error) {
+                console.log("कैमरा एक्सेस नहीं मिला: ", error);
+            }
+        }
+
+        // बोलने और आवाज़ सुनने का फंक्शन (Speech Synthesis)
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'hi-IN'; // हिंदी भाषा
+                window.speechSynthesis.speak(utterance);
+            }
+        }
 
         function startMyra() {
-            var msg = new SpeechSynthesisUtterance("अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है! मायरा सक्रिय है।");
-            msg.lang = 'hi-IN';
-            window.speechSynthesis.speak(msg);
+            speakText("नमस्ते अशोक करोसिया जी, मायरा आपकी सेवा में तैयार है।");
+            document.getElementById('statusText').innerText = "सुन रही हूँ...";
         }
-    </script>
 
+        // पेज लोड होते ही कैमरा चालू करें
+        window.onload = () => {
+            initCamera();
+        };
+    </script>
 </body>
 </html>
 
