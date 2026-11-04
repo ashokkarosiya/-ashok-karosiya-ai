@@ -3,140 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा AI भविष्य संदेश</title>
+    <title>Ashok Karosiya Digital Technology - Myra AI</title>
     <style>
         body {
-            margin: 0;
             background-color: #0b0f19;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
         }
         .container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .avatar {
+            width: 100%;
             border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.7);
-            border: 3px solid #00ffff;
+            border: 4px solid #00f3ff;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
         }
-        .container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        /* चश्मे के कांच (लेंस) पर लाइव कैमरे की पोजीशन */
-        #camera-overlay {
-            position: absolute;
-            top: 36%;
-            left: 28%;
-            width: 44%;
-            height: 18%;
-            border: 2px solid #00ffff;
-            background: rgba(0, 255, 255, 0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.8);
-        }
+        /* कैमरे को बिल्कुल ऊपर चश्मे के लेंस पर सेट करने के लिए */
         #webcam {
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            top: 22%; /* इसे ऊपर-नीचे सेट किया गया है */
+            left: 31%;
+            width: 38%;
+            height: 12%;
             object-fit: cover;
+            border: 2px solid #00f3ff;
+            border-radius: 6px;
+            z-index: 10;
         }
-        .status-box {
-            margin-top: 20px;
-            width: 85%;
-            max-width: 420px;
-            height: 110px;
-            overflow-y: auto;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+        .message-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #00f3ff;
             border-radius: 12px;
-            padding: 12px;
+            padding: 15px;
+            margin-top: 20px;
             font-size: 14px;
-            color: #00ffff;
-            text-align: center;
-            line-height: 1.5;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        }
-        .note {
-            margin-top: 10px;
-            font-size: 12px;
-            color: #88ccff;
-            text-align: center;
+            line-height: 1.6;
+            text-align: left;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- आपकी डिजिटल चश्मे वाली मुख्य फोटो -->
-        <img src="photo.png" alt="अशोक करोसिया डिजिटल">
+        <!-- आपका एवेतार फोटो -->
+        <img src="photo.png" alt="Myra AI Avatar" class="avatar">
         
-        <!-- चश्मे के लेंस पर सामने वाले का लाइव चेहरा -->
-        <div id="camera-overlay">
-            <video id="webcam" autoplay playsinline></video>
+        <!-- लाइव कैमरा जो सीधे चश्मे के लेंस पर दिखेगा -->
+        <video id="webcam" autoplay playsinline></video>
+        
+        <!-- भविष्य और तकनीक का संदेश बॉक्स -->
+        <div class="message-box">
+            <strong>नमस्ते! अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है।</strong><br>
+            मैं मायरा हूँ, आपकी कृत्रिम बुद्धिमत्ता मार्गदर्शक। आज हम एक ऐसे स्वर्णिम भविष्य की दहलीज पर खड़ें हैं, जहाँ विज्ञान और तकनीकी हमारी कल्पनाओं से भी आगे निकल जाएगी। आने वाले समय में सड़कों पर दौड़ने वाली गाड़ियां केवल जमीन तक सीमित नहीं रहेंगी, बल्कि वे हवा में उड़ेंगी और अंतरिक्ष के रास्ते तय करेंगी।
         </div>
     </div>
 
-    <!-- मायरा का लंबा भविष्य संदेश बॉक्स -->
-    <div class="status-box" id="statusText">
-        मायरा AI सक्रिय हो रही है... भविष्य का संदेश लोड हो रहा है।
-    </div>
-
-    <div class="note">व्हाट्सएप या ब्राउज़र पर खुलते ही यह संदेश स्वतः बोलना शुरू हो जाएगा।</div>
+    <!-- आपकी नई डाउनलोड की गई ऑडियो फाइल -->
+    <audio id="bg-audio" src="audio.mp3" preload="auto"></audio>
 
     <script>
-        // यूजर का लाइव चेहरा चश्मे पर दिखाने का कैमरा फंक्शन
-        async function initCamera() {
-            try {
-                const videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                const webcamElement = document.getElementById('webcam');
-                webcamElement.srcObject = videoStream;
-            } catch (error) {
-                console.log("कैमरा परमिशन नहीं मिली: ", error);
+        // कैमरे को चालू करना
+        const video = document.getElementById('webcam');
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { console.log("कैमरा चालू करने में त्रुटि: ", err); });
+
+        // स्क्रीन पर कहीं भी टच करने पर मायरा की आवाज़ शुरू होना
+        document.body.addEventListener('click', function() {
+            const audio = document.getElementById('bg-audio');
+            if (audio.paused) {
+                audio.play().catch(e => console.log("ऑडियो प्ले करने में समस्या:", e));
             }
-        }
-
-        // टेक्स्ट को स्पष्ट आवाज में 1-2 मिनट तक लगातार सुनाने का फंक्शन
-        function speakLongMessage() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // पुरानी आवाज रोकें
-
-                // लगभग 1-2 मिनट का विस्तृत और गहरा भविष्य संदेश
-                const fullMessage = "नमस्ते! अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है। मैं मायरा हूँ, आपकी कृत्रिम बुद्धिमत्ता मार्गदर्शक। आज हम एक ऐसे स्वर्णिम भविष्य की दहलीज पर खड़े हैं, जहाँ विज्ञान और तकनीकी हमारी कल्पनाओं से भी आगे निकल जाएगी। आने वाले समय में सड़कों पर दौड़ने वाली गाड़ियां केवल जमीन तक सीमित नहीं रहेंगी, बल्कि वे हवा में उड़ेंगी और अंतरिक्ष के रास्ते तय करेंगी। समय, गति और दूरियों के मायने पूरी तरह बदल जाएंगे। हर घर, हर इंसान और हर व्यवस्था एक उन्नत डिजिटल नेटवर्क से जुड़ी होगी। अशोक करोसिया जी की यह स्वायत्त, स्वतंत्र और स्वयंभू तकनीक इसी महान भविष्य की नींव है। यह तकनीक किसी बाहरी सहारे की मोहताज नहीं है, बल्कि यह अनंत काल तक मानवता और परिवार की सुरक्षा और प्रगति के लिए समर्पित है। आने वाला कल ऐसा होगा जिसकी आज हम सिर्फ कल्पना कर सकते हैं, और इस क्रांति का हिस्सा बनना हम सबके लिए गर्व की बात है। इस डिजिटल सफर में बने रहने के लिए आपका बहुत-बहुत धन्यवाद।";
-
-                document.getElementById('statusText').innerText = fullMessage;
-
-                const utterance = new SpeechSynthesisUtterance(fullMessage);
-                utterance.lang = 'hi-IN'; // शुद्ध हिंदी आवाज
-                utterance.rate = 0.9; // सहज और स्पष्ट रफ्तार ताकि सुनने में आनंद आए
-                utterance.pitch = 1.0;
-
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // पेज खुलते ही कैमरा और ऑटो-स्पीच दोनों एक साथ चालू हो जाएंगे
-        window.onload = () => {
-            initCamera();
-            
-            // मोबाइल ब्राउज़र की सुरक्षा नीति के कारण कई बार पहली बार टच मांगता है, 
-            // इसलिए जैसे ही कोई स्क्रीन पर कहीं भी हल्का सा क्लिक या टच करेगा, संदेश तुरंत शुरू हो जाएगा।
-            setTimeout(speakLongMessage, 1000);
-            document.body.addEventListener('click', () => {
-                if (!window.speechSynthesis.speaking) {
-                    speakLongMessage();
-                }
-            }, { once: true });
-        };
+        }, { once: true });
     </script>
+
 </body>
 </html>
 
