@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा AI</title>
+    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा AI भविष्य संदेश</title>
     <style>
         body {
             margin: 0;
             background-color: #0b0f19;
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
         }
         .container {
             position: relative;
-            width: 320px;
-            height: 320px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
             overflow: hidden;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.7);
             border: 3px solid #00ffff;
         }
         .container img {
@@ -31,90 +31,111 @@
             height: 100%;
             object-fit: cover;
         }
-        /* चश्मे के लेंस पर कैमरे का ओवरले फ्रेम */
+        /* चश्मे के कांच (लेंस) पर लाइव कैमरे की पोजीशन */
         #camera-overlay {
             position: absolute;
-            top: 38%;
-            left: 32%`z;
-            width: 36%;
+            top: 36%;
+            left: 28%;
+            width: 44%;
             height: 18%;
-            border: 2px dashed #00ffff;
-            background: rgba(0, 255, 255, 0.15);
-            border-radius: 8px;
+            border: 2px solid #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 6px;
             overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.8);
         }
         #webcam {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .status {
+        .status-box {
             margin-top: 20px;
-            font-size: 18px;
+            width: 85%;
+            max-width: 420px;
+            height: 110px;
+            overflow-y: auto;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 14px;
             color: #00ffff;
-            font-weight: bold;
             text-align: center;
+            line-height: 1.5;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
-        .btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #00ffff;
-            color: #0b0f19;
-            border: none;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        .note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #88ccff;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- आपकी मुख्य फोटो (फाइल का नाम photo.png होना चाहिए) -->
-        <img src="photo.png" alt="अशोक करोसिया">
+        <!-- आपकी डिजिटल चश्मे वाली मुख्य फोटो -->
+        <img src="photo.png" alt="अशोक करोसिया डिजिटल">
         
-        <!-- चश्मे के लेंस पर लाइव कैमरा व्यू -->
+        <!-- चश्मे के लेंस पर सामने वाले का लाइव चेहरा -->
         <div id="camera-overlay">
             <video id="webcam" autoplay playsinline></video>
         </div>
     </div>
 
-    <div class="status" id="statusText">मायरा AI सक्रिय है... बोलिए!</div>
-    <button class="btn" onclick="startMyra()">मायरा से बात करें</button>
+    <!-- मायरा का लंबा भविष्य संदेश बॉक्स -->
+    <div class="status-box" id="statusText">
+        मायरा AI सक्रिय हो रही है... भविष्य का संदेश लोड हो रहा है।
+    </div>
+
+    <div class="note">व्हाट्सएप या ब्राउज़र पर खुलते ही यह संदेश स्वतः बोलना शुरू हो जाएगा।</div>
 
     <script>
-        // कैमरा शुरू करने का फंक्शन
+        // यूजर का लाइव चेहरा चश्मे पर दिखाने का कैमरा फंक्शन
         async function initCamera() {
             try {
                 const videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
                 const webcamElement = document.getElementById('webcam');
                 webcamElement.srcObject = videoStream;
             } catch (error) {
-                console.log("कैमरा एक्सेस नहीं मिला: ", error);
+                console.log("कैमरा परमिशन नहीं मिली: ", error);
             }
         }
 
-        // बोलने और आवाज़ सुनने का फंक्शन (Speech Synthesis)
-        function speakText(text) {
+        // टेक्स्ट को स्पष्ट आवाज में 1-2 मिनट तक लगातार सुनाने का फंक्शन
+        function speakLongMessage() {
             if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'hi-IN'; // हिंदी भाषा
+                window.speechSynthesis.cancel(); // पुरानी आवाज रोकें
+
+                // लगभग 1-2 मिनट का विस्तृत और गहरा भविष्य संदेश
+                const fullMessage = "नमस्ते! अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है। मैं मायरा हूँ, आपकी कृत्रिम बुद्धिमत्ता मार्गदर्शक। आज हम एक ऐसे स्वर्णिम भविष्य की दहलीज पर खड़े हैं, जहाँ विज्ञान और तकनीकी हमारी कल्पनाओं से भी आगे निकल जाएगी। आने वाले समय में सड़कों पर दौड़ने वाली गाड़ियां केवल जमीन तक सीमित नहीं रहेंगी, बल्कि वे हवा में उड़ेंगी और अंतरिक्ष के रास्ते तय करेंगी। समय, गति और दूरियों के मायने पूरी तरह बदल जाएंगे। हर घर, हर इंसान और हर व्यवस्था एक उन्नत डिजिटल नेटवर्क से जुड़ी होगी। अशोक करोसिया जी की यह स्वायत्त, स्वतंत्र और स्वयंभू तकनीक इसी महान भविष्य की नींव है। यह तकनीक किसी बाहरी सहारे की मोहताज नहीं है, बल्कि यह अनंत काल तक मानवता और परिवार की सुरक्षा और प्रगति के लिए समर्पित है। आने वाला कल ऐसा होगा जिसकी आज हम सिर्फ कल्पना कर सकते हैं, और इस क्रांति का हिस्सा बनना हम सबके लिए गर्व की बात है। इस डिजिटल सफर में बने रहने के लिए आपका बहुत-बहुत धन्यवाद।";
+
+                document.getElementById('statusText').innerText = fullMessage;
+
+                const utterance = new SpeechSynthesisUtterance(fullMessage);
+                utterance.lang = 'hi-IN'; // शुद्ध हिंदी आवाज
+                utterance.rate = 0.9; // सहज और स्पष्ट रफ्तार ताकि सुनने में आनंद आए
+                utterance.pitch = 1.0;
+
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        function startMyra() {
-            speakText("नमस्ते अशोक करोसिया जी, मायरा आपकी सेवा में तैयार है।");
-            document.getElementById('statusText').innerText = "सुन रही हूँ...";
-        }
-
-        // पेज लोड होते ही कैमरा चालू करें
+        // पेज खुलते ही कैमरा और ऑटो-स्पीच दोनों एक साथ चालू हो जाएंगे
         window.onload = () => {
             initCamera();
+            
+            // मोबाइल ब्राउज़र की सुरक्षा नीति के कारण कई बार पहली बार टच मांगता है, 
+            // इसलिए जैसे ही कोई स्क्रीन पर कहीं भी हल्का सा क्लिक या टच करेगा, संदेश तुरंत शुरू हो जाएगा।
+            setTimeout(speakLongMessage, 1000);
+            document.body.addEventListener('click', () => {
+                if (!window.speechSynthesis.speaking) {
+                    speakLongMessage();
+                }
+            }, { once: true });
         };
     </script>
 </body>
 </html>
-
