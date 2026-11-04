@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अशोक करोसिया डिजिटल टेक्नोलॉजी - मायरा</title>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #131b2e;
+            border: 2px solid #ff2a85;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.4);
+        }
+        .glass-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .base-image {
+            width: 100%;
+            border-radius: 10px;
+        }
+        /* चश्मे के लेंस पर लाइव कैमरा दिखाने की सेटिंग */
+        #userCamera {
+            position: absolute;
+            top: 32%;
+            left: 28%;
+            width: 22%;
+            height: 12%;
+            object-fit: cover;
+            border-radius: 50% / 30%;
+            border: 1px solid #00ffff;
+            transform: rotate(-5deg);
+        }
+        .btn {
+            background: linear-gradient(45deg, #ff2a85, #8a2be2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🤖 मायरा - यूनिवर्सल एआई</h2>
+        <p>निर्माता: अशोक करोसिया डिजिटल टेक्नोलॉजी</p>
+
+        <div class="glass-container">
+            <!-- यहाँ आपकी फोटो का नाम photo.jpg होना चाहिए -->
+            <img src="photo.jpg" alt="अशोक करोसिया" class="base-image">
+            
+            <!-- चश्मे के लेंस के अंदर दिखने वाला लाइव कैमरा -->
+            <video id="userCamera" autoplay playsinline></video>
+        </div>
+
+        <p>मायरा बातचीत के लिए तैयार है।</p>
+        <button class="btn" onclick="startMyra()">▶ मायरा से बातचीत शुरू करें</button>
+    </div>
+
+    <script>
+        // मोबाइल का कैमरा चालू करके लेंस में दिखाने का कोड
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(function(stream) {
+                var videoElement = document.getElementById('userCamera');
+                videoElement.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.log("कैमरा चालू नहीं हो सका: ", error);
+            });
+
+        function startMyra() {
+            alert("अशोक करोसिया डिजिटल टेक्नोलॉजी में आपका स्वागत है! मायरा सक्रिय है।");
+        }
+    </script>
+
+</body>
+</html>
